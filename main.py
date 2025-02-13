@@ -1,4 +1,4 @@
-from flask import Flask, render_template
+from flask import Flask, render_template, request
 
 app=Flask(__name__)
 
@@ -42,7 +42,7 @@ def func(param="Juan"):
     return f"<h1> ¡Hola, {param}!</h1>"
 
 @app.route("/operas")
-def operas():
+def operaciones():
     return '''
             <form>
                 <label for="name">Name:</label>
@@ -50,6 +50,52 @@ def operas():
             </form>
            '''
 
+@app.route("/OperasBas")
+def operas():
+    return render_template("OperasBas.html")
+
+@app.route("/result", methods=["GET","POST"])
+def result():
+    n1 = request.form.get("n1")
+    n2 = request.form.get("n2")
+    return "La multiplicación de {} x {} es {}".format(n1,n2,str(int(n1)*int(n2)))
+
+@app.route("/resultado", methods=["GET", "POST"])
+def resultado():
+    n1 = request.form.get("n1")
+    n2 = request.form.get("n2")
+    oper = request.form.get("oper")
+
+    resultado = ""
+
+    try:
+        n1 = float(n1)
+        n2 = float(n2)
+
+        if oper == "suma":
+            resultado = n1 + n2
+            operacion = "suma"
+        elif oper == "resta":
+            resultado = n1 - n2
+            operacion = "resta"
+        elif oper == "multi":
+            resultado = n1 * n2
+            operacion = "multiplicación"
+        elif oper == "division":
+            if n2 != 0:
+                resultado = n1 / n2
+                operacion = "división"
+            else:
+                return "Error: No se puede dividir entre cero."
+
+        return render_template("OperasBas.html", resultado=resultado)
+
+    except ValueError:
+        return "Error: Por favor ingrese números válidos."
+
+@app.route("/cinepolis")
+def cine():
+    return render_template("Cinepolis.html")
 
 if __name__ == "__main__":
     app.run(debug=True, port=3000)

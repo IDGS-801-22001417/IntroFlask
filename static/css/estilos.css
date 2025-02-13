@@ -1,0 +1,25 @@
+body {
+    background-image: url('../img/dueno_cinepolis.jpg');
+    background-size: cover;
+    background-position: center;
+    background-attachment: fixed;
+    color: white;
+    margin-top: 50px;
+}
+
+.formulario {
+    background-color: rgba(0, 0, 0, 0.5);
+    color: white;
+    padding: 20px;
+    border-radius: 10px;
+}
+
+.titulo {
+    color: white;
+    font-style: italic;
+}
+.contenedor-bordeado {
+    border: 2px solid white;
+    border-radius: 10px;
+    padding: 20px;
+}
