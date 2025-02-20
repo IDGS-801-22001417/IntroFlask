@@ -1,5 +1,6 @@
 from flask import Flask, render_template, request
 from datetime import datetime
+import forms
 
 app=Flask(__name__)
 
@@ -183,6 +184,21 @@ def Imprimir():
         signo=signo,
         sexo=sexo
     )
+
+@app.route("/Alumnos", methods=["GET","POST"])
+def alumnos():
+    mat=''
+    nom=''
+    ape=''
+    email=''
+    alumno_class=forms.UserForm(request.form)
+    if request.method == 'POST':
+        mat = alumno_class.matricula.data
+        nom = alumno_class.nombre.data
+        ape = alumno_class.apellido.data
+        email = alumno_class.correo.data
+
+    return render_template("Alumnos.html", form=alumno_class, mat=mat, nom=nom, ape=ape, correo=email)
 
 if __name__ == "__main__":
     app.run(debug=True, port=3000)
