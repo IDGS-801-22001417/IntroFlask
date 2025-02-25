@@ -3,7 +3,9 @@
 
 {%import "_macros.html" as macro%}
 
-<form action="/Alumnos" method="post">
+<form action="/Alumnos" method="post" novalidate>
+    {{form.csrf_token}}
+    <input type="hidden" name="csrf_token" value="{{csrf_token()}}">
     {{macro.camposNuevos(form.matricula)}}
     {{macro.camposNuevos(form.nombre)}}
     {{macro.camposNuevos(form.apellido)}}

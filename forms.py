@@ -4,8 +4,7 @@ from wtforms import validators
 
 class UserForm(Form):
     matricula = IntegerField("Matricula",[
-        validators.DataRequired(message="El campo es requerido"),
-        validators.length(min=3,max=10,message="3-10 Caracteres")
+        validators.DataRequired(message="El campo es requerido")
     ])
     nombre = StringField("Nombre",[
         validators.DataRequired(message="El campo es requerido")
