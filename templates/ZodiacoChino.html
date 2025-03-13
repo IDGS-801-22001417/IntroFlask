@@ -9,46 +9,47 @@
 </head>
 <body>
     <div class="container container-custom">
+        {%with messages=get_flashed_messages()%}
+                    {%if messages%}
+                        {%for message in messages%}
+                        <div class="alert alert-success">
+                            {{message}}
+                        </div>
+                        {%endfor%}
+                    {%endif%}
+                {%endwith%}
         <div class="row">
             <div class="col-md-6 border-end">
                 <h3 class="text-center mb-4">Datos Personales</h3>
-                <form action="/imprimir" method="post">
+                {%import "_macros.html" as macro%}
+                <form action="" method="post" novalidate>
+                    {{form.csrf_token}}
+                    <input type="hidden" name="csrf_token" value="{{csrf_token()}}">
+
                     <div class="mb-3">
-                        <label for="nombre" class="form-label">Nombre:</label>
-                        <input type="text" class="form-control" id="nombre" name="nombre" placeholder="Nombre">
+                        {{macro.camposNuevos(form.nombre, class="form-control", placeholder="Nombre")}}
                     </div>
                     <div class="mb-3">
-                        <label for="apaterno" class="form-label">Apaterno:</label>
-                        <input type="text" class="form-control" id="apaterno" name="apaterno" placeholder="Apaterno">
+                        {{macro.camposNuevos(form.apellido_paterno, class="form-control", placeholder="Apellido Paterno")}}
                     </div>
                     <div class="mb-3">
-                        <label for="amaterno" class="form-label">Amaterno:</label>
-                        <input type="text" class="form-control" id="amaterno" name="amaterno" placeholder="Amaterno">
+                        {{macro.camposNuevos(form.apellido_materno, class="form-control", placeholder="Apellido Materno")}}
                     </div>
                     <h5 class="mt-4">Fecha de nacimiento</h5>
                     <div class="row">
                         <div class="col">
-                            <input type="number" class="form-control" placeholder="Día" name="dia">
+                            {{macro.camposNuevos(form.dia, class="form-control", placeholder="Dia")}}
                         </div>
                         <div class="col">
-                            <input type="number" class="form-control" placeholder="Mes" name="mes">
+                            {{macro.camposNuevos(form.mes, class="form-control", placeholder="Mes")}}
                         </div>
                         <div class="col">
-                            <input type="number" class="form-control" placeholder="Año" name="anio">
+                            {{macro.camposNuevos(form.anio, class="form-control", placeholder="Año")}}
                         </div>
                     </div>
                     <h5 class="mt-4">Sexo</h5>
-                    <div class="form-check">
-                        <input class="form-check-input" type="radio" name="sexo" id="masculino" value="masculino">
-                        <label class="form-check-label" for="masculino">
-                            Masculino
-                        </label>
-                    </div>
-                    <div class="form-check">
-                        <input class="form-check-input" type="radio" name="sexo" id="femenino" value="femenino">
-                        <label class="form-check-label" for="femenino">
-                            Femenino
-                        </label>
+                    <div class="">
+                        {{macro.camposNuevos(form.sexo)}}
                     </div>
                     <div class="text-center">
                         <button type="submit" class="btn btn-dark w-50 mt-4">IMPRIMIR</button>

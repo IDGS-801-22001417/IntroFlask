@@ -160,10 +160,6 @@ def comprar():
     except Exception as ex:
         return render_template("Cinepolis.html", total=f"Error: {str(ex)}")
 
-@app.route("/ZodiacoChino")
-def Zodiaco():
-    return render_template("ZodiacoChino.html")
-
 def calcular_edad(dia, mes, anio):
     hoy = datetime.now()
     fecha_nacimiento = datetime(anio, mes, dia)
@@ -180,26 +176,40 @@ def signo_zodiacal_chino(anio):
     ]
     return signos[anio % 12]
 
-@app.route("/imprimir", methods=["POST"])
+@app.route("/ZodiacoChino", methods=["GET","POST"])
 def Imprimir():
-    nombre = request.form.get("nombre")
-    apaterno = request.form.get("apaterno")
-    amaterno = request.form.get("amaterno")
-    dia = int(request.form.get("dia"))
-    mes = int(request.form.get("mes"))
-    anio = int(request.form.get("anio"))
-    sexo = request.form.get("sexo")
-
-    edad = calcular_edad(dia, mes, anio)
-    signo = signo_zodiacal_chino(anio)
-
-    if sexo == "masculino":
-        sexo = "Hombre"
-    else:
-        sexo = "Mujer"
+    nombre = ''
+    apaterno = ''
+    amaterno = ''
+    edad = 0
+    signo = ''
+    sexo = ''
     
+    zodiaco_class=forms.ZodiacoForms(request.form)
+    
+    if request.method == 'POST' and zodiaco_class.validate():
+        nombre = zodiaco_class.nombre.data
+        apaterno = zodiaco_class.apellido_paterno.data
+        amaterno = zodiaco_class.apellido_materno.data
+        dia = zodiaco_class.dia.data
+        mes = zodiaco_class.mes.data
+        anio = zodiaco_class.anio.data
+        sexo = zodiaco_class.sexo.data
+
+        edad = calcular_edad(dia, mes, anio)
+        signo = signo_zodiacal_chino(anio)
+
+        if sexo == "masculino":
+            sexo = "Hombre"
+        else:
+            sexo = "Mujer"
+
+        mensaje="Bienvenido {}".format(nombre)
+        flash(mensaje) 
+
     return render_template(
-        "ZodiacoChino.html", 
+        "ZodiacoChino.html",
+        form=zodiaco_class, 
         nombre=nombre, 
         apaterno=apaterno, 
         amaterno=amaterno, 
